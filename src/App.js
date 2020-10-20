@@ -1,27 +1,31 @@
 import React, { useState } from "react";
 import "./App.css";
+import { useForm } from "react-hook-form";
 
 function App() {
-  const [formData, setFormData] = useState({
-    username: "",
-    age: 0,
-    remember: false,
+  const { handleSubmit, register, errors } = useForm({
+    validationSchema: Schema,
   });
 
-  function onSubmit(event) {}
+  function onSubmit(formData) {
+    console.log(formData);
+  }
+
+  console.log(errors);
 
   return (
     <div>
       <h1>react-hook-form</h1>
-      <form autoComplete="off" onSubmit={onSubmit}>
+      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <label>Username</label>
-        <input type="text" name="username" />
+        <input type="text" name="username" ref={register} />
+        {errors.username && <p>{errors.username.message}</p>}
 
         <label>Age</label>
-        <input type="number" name="age" />
+        <input type="number" name="age" ref={register} />
 
         <span>
-          <input type="checkbox" name="remember" />
+          <input type="checkbox" name="remember" ref={register} />
           <label>Remember Me</label>
         </span>
 
