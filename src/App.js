@@ -3,10 +3,11 @@ import "./App.css";
 import { useForm } from "react-hook-form";
 
 const App = () => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const imageURL = watch("imageURL", 2);
-
   const [images, setImages] = useState([]);
+
+  const { register, handleSubmit, watch, errors } = useForm();
+  const imageURL = watch("imageURL");
+  const addKeywords = watch("addKeywords");
 
   const addImage = () => {
     const currentImages = images;
@@ -37,8 +38,13 @@ const App = () => {
 
         <label>Image URL</label>
 
-        <input type="text" ref={register} name="imageURL" placeholder="Url" />
-
+        <input
+          type="url"
+          ref={register({ required: true, minLength: 3 })}
+          name="imageURL"
+          placeholder="Url"
+        />
+        {errors.imageURL && <p>Incorrect URL format</p>}
         <button
           type="button"
           onClick={() => {
@@ -49,12 +55,22 @@ const App = () => {
         </button>
 
         {images.map((image, index) => (
-          <tr key={index}>
+          <div key={index}>
             <p>{image}</p>
             <button onClick={() => remove(index)}>Delete</button>
-          </tr>
+          </div>
         ))}
+        <div>
+          <label>Add Keywords</label>
+          <input name="addKeywords" type="checkbox" ref={register} />
+        </div>
 
+        {addKeywords && (
+          <div>
+            <label>Keywords</label>
+            <input type="text" name="Keywords" ref={register} />
+          </div>
+        )}
         <button type="submit">Submit</button>
       </form>
     </>
