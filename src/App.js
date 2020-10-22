@@ -2,37 +2,63 @@ import React, { useState } from "react";
 import "./App.css";
 import { useForm } from "react-hook-form";
 
-function App() {
-  const { handleSubmit, register, errors } = useForm({
-    validationSchema: Schema,
-  });
+const App = () => {
+  const { register, handleSubmit, watch, errors } = useForm();
+  const imageURL = watch("imageURL", 2);
 
-  function onSubmit(formData) {
+  const [images, setImages] = useState([]);
+
+  const addImage = () => {
+    const currentImages = images;
+    currentImages.push(imageURL);
+    setImages([...currentImages]);
+  };
+
+  const remove = (index) => {
+    setImages([...images.slice(0, index), ...images.slice(index + 1)]);
+  };
+
+  const onSubmit = (formData) => {
     console.log(formData);
-  }
-
-  console.log(errors);
+    alert(JSON.stringify(formData));
+  };
 
   return (
-    <div>
-      <h1>react-hook-form</h1>
+    <>
+      <h1>Add Article</h1>
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        <label>Username</label>
-        <input type="text" name="username" ref={register} />
-        {errors.username && <p>{errors.username.message}</p>}
+        <label>Headline</label>
+        <input
+          type="text"
+          name="headline"
+          ref={register({ required: true, minLength: 3 })}
+        />
+        {errors.headline && <p>Headline required</p>}
 
-        <label>Age</label>
-        <input type="number" name="age" ref={register} />
+        <label>Image URL</label>
 
-        <span>
-          <input type="checkbox" name="remember" ref={register} />
-          <label>Remember Me</label>
-        </span>
+        <input type="text" ref={register} name="imageURL" placeholder="Url" />
+
+        <button
+          type="button"
+          onClick={() => {
+            addImage();
+          }}
+        >
+          Add image URL
+        </button>
+
+        {images.map((image, index) => (
+          <tr key={index}>
+            <p>{image}</p>
+            <button onClick={() => remove(index)}>Delete</button>
+          </tr>
+        ))}
 
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </>
   );
-}
+};
 
 export default App;

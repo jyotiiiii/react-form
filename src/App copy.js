@@ -2,30 +2,32 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
+  const [images, setImages] = useState([]);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    username: "",
-    age: 0,
-    remember: false,
+    headline: "",
+    bodyText: "",
+    imageURL: "",
   });
 
-  function validate({ username }) {
-    const valid = username && username.length > 3;
-    if (!valid) {
-      setErrors({ username: true });
-    } else {
-      setErrors({});
-    }
-    return valid;
-  }
+  // function validate({ username }) {
+  //   const valid = username && username.length > 3;
+  //   if (!valid) {
+  //     setErrors({ username: true });
+  //   } else {
+  //     setErrors({});
+  //   }
+  //   return valid;
+  // }
 
   function onSubmit(event) {
     event.preventDefault();
 
-    validate(formData) ? console.log(formData) : console.log("invalid");
+    // validate(formData) ? console.log(formData) : console.log("invalid");
   }
 
   function onChange({ target }) {
+    console.log(target);
     const value = target.type === "checkbox" ? target.checked : target.value;
     setFormData((prevstate) => ({
       ...prevstate,
@@ -33,28 +35,47 @@ function App() {
     }));
   }
 
+  function addImage() {
+    const currentImages = images;
+    currentImages.push(formData.imageURL);
+    setImages([...currentImages]);
+    console.log({ images });
+  }
+
   return (
     <div>
       <h1>react-hook-form</h1>
       <form autoComplete="off" onSubmit={onSubmit}>
-        <label>Username</label>
+        <label>Headline</label>
         <input
           type="text"
-          name="username"
-          value={formData.username}
-          onChange={onChange}
+          name="headline"
+          value={formData.headline}
+          onChange={addImage}
         />
-        {errors.username && <p>Username invalid</p>}
-
-        <label>Age</label>
+        {errors.headline && <p>Username invalid</p>}
+        <label>Article Body</label>
         <input
-          type="number"
-          name="age"
-          value={formData.age}
+          type="text"
+          name="bodyText"
+          value={formData.bodyText}
+          onChange={onChange}
+        />
+        <label>Image URL</label>
+        <input
+          type="text"
+          name="imageURL"
+          value={formData.imageURL}
           onChange={onChange}
         />
 
-        <span>
+        <button onClick={addImage}>add image URL</button>
+
+        {images.map((image, index) => (
+          <p key={index}>{image}</p>
+        ))}
+
+        {/* <span>
           <input
             type="checkbox"
             name="remember"
@@ -62,8 +83,7 @@ function App() {
             onChange={onChange}
           />
           <label>Remember Me</label>
-        </span>
-
+        </span> */}
         <button type="submit">Submit</button>
       </form>
     </div>
