@@ -51,7 +51,7 @@ function App() {
           type="text"
           name="headline"
           value={formData.headline}
-          onChange={addImage}
+          onChange={onChange}
         />
         {errors.headline && <p>Username invalid</p>}
         <label>Article Body</label>
@@ -66,7 +66,7 @@ function App() {
           type="text"
           name="imageURL"
           value={formData.imageURL}
-          onChange={onChange}
+          onChange={addImage}
         />
 
         <button onClick={addImage}>add image URL</button>

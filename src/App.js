@@ -27,7 +27,7 @@ const App = () => {
   return (
     <>
       <h1>Add Article</h1>
-      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <label>Headline</label>
         <input
           type="text"
