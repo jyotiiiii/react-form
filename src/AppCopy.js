@@ -69,7 +69,7 @@ function App() {
           type="text"
           name="imageURL"
           value={formData.imageURL}
-          onChange={onChange}
+          onChange={addImage}
         />
 
         <button onClick={addImage}>add image URL</button>
