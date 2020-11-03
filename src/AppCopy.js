@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 
-function App() {
+const App = () => {
   const [images, setImages] = useState([]);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -11,7 +11,7 @@ function App() {
     remember: false,
   });
 
-  function validate() {
+  const validate = () => {
     const { headline, bodyText, imageURL } = formData;
     const valid = headline && headline.length > 3;
     if (!valid) {
@@ -20,14 +20,14 @@ function App() {
       setErrors({});
     }
     return valid;
-  }
+  };
 
-  function onSubmit(event) {
+  const onSubmit = (event) => {
     event.preventDefault();
     validate() ? console.log(formData) : console.log("invalid");
-  }
+  };
 
-  function onChange({ target }) {
+  const onChange = ({ target }) => {
     const { type, checked, value, name } = target;
     // debugger;
     // console.log(`Before state change: ${JSON.stringify(formData)}`);
@@ -36,14 +36,14 @@ function App() {
       ...prevstate,
       [name]: finalValue,
     }));
-  }
+  };
 
-  function addImage() {
+  const addImage = () => {
     const currentImages = images;
     currentImages.push(formData.imageURL);
     setImages([...currentImages]);
     console.log({ images });
-  }
+  };
 
   return (
     <div>
@@ -91,6 +91,6 @@ function App() {
       </form>
     </div>
   );
-}
+};
 
 export default App;
