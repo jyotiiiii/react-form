@@ -8,30 +8,33 @@ function App() {
     headline: "",
     bodyText: "",
     imageURL: "",
+    remember: false,
   });
 
-  // function validate({ username }) {
-  //   const valid = username && username.length > 3;
-  //   if (!valid) {
-  //     setErrors({ username: true });
-  //   } else {
-  //     setErrors({});
-  //   }
-  //   return valid;
-  // }
+  function validate() {
+    const { headline, bodyText, imageURL } = formData;
+    const valid = headline && headline.length > 3;
+    if (!valid) {
+      setErrors({ headline: true });
+    } else {
+      setErrors({});
+    }
+    return valid;
+  }
 
   function onSubmit(event) {
     event.preventDefault();
-
-    // validate(formData) ? console.log(formData) : console.log("invalid");
+    validate() ? console.log(formData) : console.log("invalid");
   }
 
   function onChange({ target }) {
-    console.log(target);
-    const value = target.type === "checkbox" ? target.checked : target.value;
+    const { type, checked, value, name } = target;
+    // debugger;
+    // console.log(`Before state change: ${JSON.stringify(formData)}`);
+    const finalValue = type === "checkbox" ? checked : value;
     setFormData((prevstate) => ({
       ...prevstate,
-      [target.name]: value,
+      [name]: finalValue,
     }));
   }
 
@@ -44,16 +47,16 @@ function App() {
 
   return (
     <div>
-      <h1>react-hook-form</h1>
+      <h1>React Form</h1>
       <form autoComplete="off" onSubmit={onSubmit}>
         <label>Headline</label>
         <input
           type="text"
           name="headline"
           value={formData.headline}
-          onChange={addImage}
+          onChange={onChange}
         />
-        {errors.headline && <p>Username invalid</p>}
+        {errors.headline && <p>Headline invalid</p>}
         <label>Article Body</label>
         <input
           type="text"
@@ -75,7 +78,7 @@ function App() {
           <p key={index}>{image}</p>
         ))}
 
-        {/* <span>
+        <span>
           <input
             type="checkbox"
             name="remember"
@@ -83,7 +86,7 @@ function App() {
             onChange={onChange}
           />
           <label>Remember Me</label>
-        </span> */}
+        </span>
         <button type="submit">Submit</button>
       </form>
     </div>
